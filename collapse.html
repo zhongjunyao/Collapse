@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Collapse 折叠面板</title>
+<style>
+.callapce{
+	padding:20px;
+	border:1px solid #ebeef5;
+	border-radius:4px;
+	--down-lh:48px; 
+	--img-down:12px;
+}
+.collapse-item{
+	background-color: #fff;
+	border-bottom: 1px solid #ebeef5;
+  color: #303133;
+  font-size: 13px;
+  text-align: justify;
+}
+.collapse-item:first-child{
+	border-top: 1px solid #ebeef5;
+}
+.item-hd{
+	position:relative;
+	height: var(--down-lh);
+  line-height: var(--down-lh);
+  cursor: pointer;
+}
+.item-hd .title{
+	display:inline-block;
+}
+.item-hd .collapse-down{
+	float: right;
+	display:inline-block;
+	margin-right: 8px;
+}
+.item-hd .downImg{
+	width:var(--img-down);
+	height:var(--img-down);
+	vertical-align: middle;
+	transform:rotate(-90deg);
+	transition: all .3s linear;
+}
+.item-hd .downImg.rotate{
+	transform: rotate(0);
+}
+.item-mn{
+	overflow:hidden;
+	max-height: 0;
+	box-sizing: border-box;
+	font-size: 13px;
+	color: #303133;
+	transition:all .3s ease-out;
+}
+.show{
+	/* 这里max-height设置一个足够大的数，但不能太大 */
+	transition-timing-function: ease-in;
+	max-height:100px;
+	padding-bottom: 20px;
+}
+
+/* 浮动 */
+/*.f-cb{
+	float:left;
+}
+.f-cb:after{
+	display:block;
+	clear:both;
+	overflow:hidden;
+	content:'';
+}*/
+</style>
+</head>
+<body>
+	
+	<div class='callapce'>
+		<div class='collapse-item'>
+			<div class='item-hd' data-flag='0'>
+				<div class='title'>一致性 Consistency</div>
+				<div class='collapse-down'>
+					<img src='down.png' class='downImg'>
+				</div>
+			</div>
+			<div class='item-mn'>
+				与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
+				在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。
+			</div>
+		</div>
+		<div class='collapse-item'>
+			<div class='item-hd' data-flag='1'>
+				<div class='title'>反馈 Feedback</div>
+				<div class='collapse-down'>
+					<img src='down.png' class='downImg'>
+				</div>
+			</div>
+			<div class='item-mn'>
+				控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；
+				页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。
+			</div>
+		</div>
+		<div class='collapse-item'>
+			<div class='item-hd' data-flag='2'>
+				<div class='title'>效率 Efficiency</div>
+				<div class='collapse-down'>
+					<img src='down.png' class='downImg'>
+				</div>
+			</div>
+			<div class='item-mn'>
+				简化流程：设计简洁直观的操作流程；
+				清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；
+				帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。
+			</div>
+		</div>
+		<div class='collapse-item'>
+			<div class='item-hd' data-flag='3'>
+				<div class='title'>可控 Controllability</div>
+				<div class='collapse-down'>
+					<img src='down.png' class='downImg'>
+				</div>
+			</div>
+			<div class='item-mn'>
+				用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；
+				结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。
+			</div>
+		</div>
+	</div>
+<script>
+let addEvent = document.addEventListener ?
+	(elem,type,listener,useCapture)=>{
+		elem.addEventListener(type,listener,useCapture);
+	}	:
+	(elem,type,listener,useCapture)=>{
+		elem.attachEvent('on'+type,listener);
+	};
+let addClass = (node,className)=>{
+	let current = node.className||'';
+	if((' '+current+' ').indexOf(' '+className+' ')===-1){
+		node.className = current?(current+' '+className):className;
+	}
+}
+let delClass = (node,className)=>{
+	let current = node.className||'';
+	node.className = (' '+current+' ').replace(' '+className+' ',' ').trim();
+}
+let $ = selector=>{
+	return [].slice.call(document.querySelectorAll(selector));
+};
+// let oCallapce = $('.callapce')[0];
+// console.log(oCallapce);
+let oItemHds = $('.item-hd');
+let oItemMns = $('.item-mn');
+let oDownImgs = $('.downImg');
+
+for(let oItemHd of oItemHds){
+	addEvent(oItemHd,'click',(ev)=>{
+		let flag = ev.currentTarget.dataset.flag;
+		if(flag){
+			// console.log('flag:',flag);
+			let oItemMn = oItemMns[flag];
+			let oDownImg = oDownImgs[flag];
+			let current = oItemMn.className||'';
+			let className = 'show';
+			if((' '+current+' ').indexOf(' '+className+' ')===-1){
+				addClass(oItemMn,className);
+				addClass(oDownImg,'rotate');
+			}else{
+				delClass(oItemMn,className);
+				delClass(oDownImg,'rotate');
+			}
+
+		}
+	})
+}
+// for(let oDownImg of oDownImgs){
+// 	addEvent(oDownImg,'click')
+// }
+
+
+</script>
+</body>
+</html>
